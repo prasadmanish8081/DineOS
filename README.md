@@ -176,16 +176,16 @@ Public registration creates `CUSTOMER` users by default.
 - Restaurant slugs are kept stable so table QR links do not break after restaurant updates.
 - QR codes encode the frontend menu URL from `MENU_BASE_URL` and fall back to `http://localhost:3000` in local development.
 
-## Deployment
+## Deployment (Render)
 
-### Backend on Render
+This repository uses Render to host both backend and frontend. A multi-service `render.yaml` config is included at the repository root.
 
-Use `render.yaml` at the repository root. Render should build the project with:
+Services defined in `render.yaml`:
 
-- `./mvnw -DskipTests package`
-- start command: `java -jar target/dineos-backend-0.0.1-SNAPSHOT.jar`
+- **DineOS Backend** (type: `web`) — builds with `./mvnw -DskipTests package` and runs the Spring Boot JAR.
+- **DineOS Frontend** (type: `static`) — builds the React app from `frontend/` and publishes `frontend/dist`.
 
-Set these environment variables in Render:
+Render build commands are configured in `render.yaml`. After connecting your GitHub repo to Render, ensure these environment variables are set for the backend:
 
 - `SPRING_DATASOURCE_URL`
 - `SPRING_DATASOURCE_USERNAME`
@@ -193,18 +193,18 @@ Set these environment variables in Render:
 - `JWT_SECRET`
 - `JWT_EXPIRATION_MS`
 - `JWT_ISSUER`
-- `MENU_BASE_URL` (set this to your Vercel frontend URL)
+- `MENU_BASE_URL` (set this to the Render frontend URL once the frontend is deployed)
 - `RAZORPAY_KEY_ID`
 - `RAZORPAY_KEY_SECRET`
 - `RAZORPAY_WEBHOOK_SECRET`
 - `RAZORPAY_CURRENCY`
 
-### Frontend on Vercel
+Frontend configuration:
 
-Deploy the `frontend/` folder. Use `npm install` and `npm run build`, and set the output directory to `dist`.
+- The frontend build runs `npm install && npm run build` in the `frontend/` folder and publishes `frontend/dist`.
+- Set the frontend environment variable on Render (Static Site) or in the backend `MENU_BASE_URL`:
+  - `VITE_API_BASE_URL` = your Render backend URL
 
-Add a Vercel environment variable:
+After updating env vars in Render, trigger a redeploy from the Render dashboard or push a commit to the `main` branch.
 
-- `VITE_API_BASE_URL` = your Render backend URL
-
-The frontend is configured for SPA routing with `frontend/vercel.json`.
+If you previously created a Vercel project for this repo, remove it from the Vercel dashboard to avoid duplicate deployments.

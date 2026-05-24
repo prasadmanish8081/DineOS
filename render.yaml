@@ -8,3 +8,13 @@ services:
     buildCommand: ./mvnw -DskipTests package
     startCommand: java -jar target/dineos-backend-0.0.1-SNAPSHOT.jar
     autoDeploy: true
+
+  - type: static
+    name: DineOS Frontend
+    env: static
+    plan: starter
+    region: oregon
+    branch: main
+    buildCommand: cd frontend && npm install && npm run build
+    publishPath: frontend/dist
+    autoDeploy: true
