@@ -175,3 +175,36 @@ Public registration creates `CUSTOMER` users by default.
 - For a real production rollout, add Flyway or Liquibase migrations before switching `ddl-auto` away from `update`.
 - Restaurant slugs are kept stable so table QR links do not break after restaurant updates.
 - QR codes encode the frontend menu URL from `MENU_BASE_URL` and fall back to `http://localhost:3000` in local development.
+
+## Deployment
+
+### Backend on Render
+
+Use `render.yaml` at the repository root. Render should build the project with:
+
+- `./mvnw -DskipTests package`
+- start command: `java -jar target/dineos-backend-0.0.1-SNAPSHOT.jar`
+
+Set these environment variables in Render:
+
+- `SPRING_DATASOURCE_URL`
+- `SPRING_DATASOURCE_USERNAME`
+- `SPRING_DATASOURCE_PASSWORD`
+- `JWT_SECRET`
+- `JWT_EXPIRATION_MS`
+- `JWT_ISSUER`
+- `MENU_BASE_URL` (set this to your Vercel frontend URL)
+- `RAZORPAY_KEY_ID`
+- `RAZORPAY_KEY_SECRET`
+- `RAZORPAY_WEBHOOK_SECRET`
+- `RAZORPAY_CURRENCY`
+
+### Frontend on Vercel
+
+Deploy the `frontend/` folder. Use `npm install` and `npm run build`, and set the output directory to `dist`.
+
+Add a Vercel environment variable:
+
+- `VITE_API_BASE_URL` = your Render backend URL
+
+The frontend is configured for SPA routing with `frontend/vercel.json`.
