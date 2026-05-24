@@ -96,7 +96,7 @@ export default function QrTablesPage() {
       <SectionHeader
         eyebrow="QR tables"
         title="Generate QR codes for tables"
-        description="Create a table and generate a QR that points to /menu/{restaurantSlug}/table/{tableNumber}."
+        description="Create a table and generate a QR that points to /#/menu/{restaurantSlug}/table/{tableNumber}."
       />
 
       <div className="grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
@@ -162,7 +162,7 @@ export default function QrTablesPage() {
                 <div className="rounded-3xl border border-white/10 bg-white/5 p-4">
                   <p className="text-sm font-semibold text-white">Menu URL</p>
                   <p className="mt-2 break-all text-sm text-slate-300">
-                    /menu/{table.restaurantSlug}/table/{table.tableNumber}
+                    /#/menu/{table.restaurantSlug}/table/{table.tableNumber}
                   </p>
                   <div className="mt-4 flex flex-col gap-2 sm:flex-row">
                     <Button onClick={fetchQr} disabled={qrLoading}>

@@ -12,7 +12,7 @@ public final class TableMapper {
         return new TableResponse(
                 table.getId(),
                 table.getTableNumber(),
-                table.getQrCodeUrl(),
+                table.getRestaurant() == null ? null : "/#/menu/" + table.getRestaurant().getSlug() + "/table/" + table.getTableNumber(),
                 table.getRestaurant() == null ? null : table.getRestaurant().getId(),
                 table.getRestaurant() == null ? null : table.getRestaurant().getSlug()
         );

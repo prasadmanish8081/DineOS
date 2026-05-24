@@ -67,7 +67,7 @@ public class TableServiceImpl implements TableService {
 
         RestaurantTable table = new RestaurantTable();
         table.setTableNumber(normalizedTableNumber);
-        table.setQrCodeUrl("/menu/" + restaurant.getSlug() + "/table/" + normalizedTableNumber);
+        table.setQrCodeUrl(buildPublicMenuPath(restaurant.getSlug(), normalizedTableNumber));
         table.setRestaurant(restaurant);
 
         return TableMapper.toResponse(tableRepository.save(table));
@@ -104,7 +104,7 @@ public class TableServiceImpl implements TableService {
             baseUrl = detectLocalNetworkBaseUrl().orElse(baseUrl);
         }
 
-        String absoluteMenuUrl = baseUrl + table.getQrCodeUrl();
+        String absoluteMenuUrl = baseUrl + buildPublicMenuPath(restaurant.getSlug(), table.getTableNumber());
         return qrCodeService.generatePng(absoluteMenuUrl, 320, 320);
     }
 
@@ -170,5 +170,9 @@ public class TableServiceImpl implements TableService {
             normalized = normalized.substring(0, normalized.length() - 1);
         }
         return normalized;
+    }
+
+    private String buildPublicMenuPath(String restaurantSlug, String tableNumber) {
+        return "/#/menu/" + restaurantSlug + "/table/" + tableNumber;
     }
 }
