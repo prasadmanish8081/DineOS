@@ -6,7 +6,7 @@ services:
     region: oregon
     branch: main
     buildCommand: ./mvnw -DskipTests package
-    startCommand: java -jar target/dineos-backend-0.0.1-SNAPSHOT.jar
+    startCommand: java -Dserver.port=$PORT -jar target/dineos-backend-0.0.1-SNAPSHOT.jar
     autoDeploy: true
 
   - type: static

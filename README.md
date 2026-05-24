@@ -208,3 +208,30 @@ Frontend configuration:
 After updating env vars in Render, trigger a redeploy from the Render dashboard or push a commit to the `main` branch.
 
 If you previously created a Vercel project for this repo, remove it from the Vercel dashboard to avoid duplicate deployments.
+
+### Optional: Deploy using Docker images on Render
+
+If Render suggests using a Docker image, you can either continue with repo-based builds or provide Dockerfiles. I added two example Dockerfiles at `docker/backend/Dockerfile` and `docker/frontend/Dockerfile`.
+
+Build and test locally:
+
+```bash
+# Backend (from repo root)
+docker build -f docker/backend/Dockerfile -t dineos-backend:local .
+docker run -e PORT=8080 -p 8080:8080 dineos-backend:local
+
+# Frontend
+docker build -f docker/frontend/Dockerfile -t dineos-frontend:local .
+docker run -p 8080:80 dineos-frontend:local
+```
+
+Using Docker on Render:
+
+- When creating the service, choose "Docker" and point Render to the appropriate Dockerfile path (e.g. `docker/backend/Dockerfile`).
+- Render will build the image and deploy the container. Ensure you set the same environment variables listed above.
+
+Notes:
+- The backend Dockerfile is multi-stage (build with Maven, run with Eclipse Temurin JRE). It respects the `PORT` env var.
+- The frontend Dockerfile builds the Vite app and serves it with Nginx (SPA routing via `nginx.conf`).
+
+Choose whichever flow you're comfortable with — repo build (no Docker) or Docker images. If you want, I can remove the Dockerfiles afterward or adjust them for a specific registry. Thank you!
