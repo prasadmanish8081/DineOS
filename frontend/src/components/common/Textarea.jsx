@@ -1,0 +1,12 @@
+export default function Textarea({ label, error, className = '', ...props }) {
+  return (
+    <label className={`block ${className}`}>
+      {label ? <span className="mb-2 block text-sm font-medium text-slate-300">{label}</span> : null}
+      <textarea
+        className="w-full rounded-2xl border border-white/10 bg-slate-900/80 px-4 py-3 text-slate-100 outline-none transition placeholder:text-slate-500 focus:border-accent-400"
+        {...props}
+      />
+      {error ? <p className="mt-2 text-xs text-red-300">{error}</p> : null}
+    </label>
+  );
+}
