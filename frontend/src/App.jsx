@@ -4,7 +4,7 @@ import DashboardLayout from './layouts/DashboardLayout';
 import PublicLayout from './layouts/PublicLayout';
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
-import HomeRedirect from './components/HomeRedirect';
+import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
@@ -22,6 +22,7 @@ import NotFoundPage from './pages/NotFoundPage';
 export default function App() {
   return (
     <Routes>
+      <Route path="/" element={<LandingPage />} />
       <Route
         path="/login"
         element={
@@ -99,7 +100,6 @@ export default function App() {
         <Route path="*" element={<NotFoundPage />} />
       </Route>
 
-      <Route path="/" element={<HomeRedirect />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
