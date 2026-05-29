@@ -17,7 +17,7 @@ import {
   FaLinkedin,
   FaFacebookF,
 } from 'react-icons/fa';
-import { FiArrowRight, FiExternalLink } from 'react-icons/fi';
+import { FiArrowRight, FiExternalLink, FiMenu, FiX } from 'react-icons/fi';
 import './LandingPage.css';
 
 const featureItems = [
@@ -156,11 +156,13 @@ const faqItems = [
 
 export default function LandingPage() {
   const [activeFaq, setActiveFaq] = useState(0);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const navItems = ['Home', 'Features', 'About', 'Pricing', 'Contact'];
 
   return (
     <div className="landing-shell">
       <motion.header
-        className="landing-nav"
+        className={`landing-nav ${mobileNavOpen ? 'menu-open' : ''}`}
         initial={{ y: -30, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -169,20 +171,46 @@ export default function LandingPage() {
           <span className="brand-mark">D</span>
           <span>DineOS</span>
         </Link>
-        <nav className="nav-links">
-          {['Home', 'Features', 'About', 'Pricing', 'Contact'].map((item) => (
-            <a key={item} href={`#${item.toLowerCase()}`}>
+        <nav className="nav-links nav-links-desktop">
+          {navItems.map((item) => (
+            <a key={item} href={`#${item.toLowerCase()}`} onClick={() => setMobileNavOpen(false)}>
               {item}
             </a>
           ))}
         </nav>
-        <div className="nav-actions">
+        <div className="nav-actions nav-actions-desktop">
           <Link className="nav-login" to="/login">
             Login
           </Link>
           <Link className="btn btn-primary" to="/register">
             Get Started
           </Link>
+        </div>
+        <button
+          type="button"
+          className="nav-toggle"
+          aria-expanded={mobileNavOpen}
+          aria-label={mobileNavOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          onClick={() => setMobileNavOpen((open) => !open)}
+        >
+          {mobileNavOpen ? <FiX /> : <FiMenu />}
+        </button>
+        <div className="nav-mobile-panel">
+          <nav className="nav-links nav-links-mobile">
+            {navItems.map((item) => (
+              <a key={item} href={`#${item.toLowerCase()}`} onClick={() => setMobileNavOpen(false)}>
+                {item}
+              </a>
+            ))}
+          </nav>
+          <div className="nav-actions nav-actions-mobile">
+            <Link className="nav-login" to="/login" onClick={() => setMobileNavOpen(false)}>
+              Login
+            </Link>
+            <Link className="btn btn-primary" to="/register" onClick={() => setMobileNavOpen(false)}>
+              Get Started
+            </Link>
+          </div>
         </div>
       </motion.header>
 

@@ -4,6 +4,8 @@ $env:SPRING_DATASOURCE_PASSWORD = ''
 $env:SPRING_DATASOURCE_DRIVER_CLASS_NAME = 'org.h2.Driver'
 $env:MENU_BASE_URL = 'http://localhost:3000'
 
+Set-Location $PSScriptRoot
+
 $defaultPort = 8080
 $altPort = 8081
 $portBusy = Test-NetConnection -ComputerName '127.0.0.1' -Port $defaultPort -WarningAction SilentlyContinue | Select-Object -ExpandProperty TcpTestSucceeded

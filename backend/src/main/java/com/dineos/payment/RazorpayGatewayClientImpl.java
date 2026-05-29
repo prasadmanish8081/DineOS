@@ -1,6 +1,7 @@
 package com.dineos.payment;
 
 import com.dineos.config.RazorpayProperties;
+import com.dineos.exception.PaymentGatewayConfigurationException;
 import com.razorpay.Order;
 import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
@@ -44,8 +45,12 @@ public class RazorpayGatewayClientImpl implements RazorpayGatewayClient {
                     String.valueOf(order.get("receipt")),
                     String.valueOf(order.get("status"))
             );
+        } catch (PaymentGatewayConfigurationException ex) {
+            throw ex;
+        } catch (RazorpayException ex) {
+            throw new PaymentGatewayConfigurationException(buildRazorpayMessage("Failed to create Razorpay order", ex));
         } catch (Exception ex) {
-            throw new IllegalStateException("Failed to create Razorpay order", ex);
+            throw new PaymentGatewayConfigurationException(buildRazorpayMessage("Failed to create Razorpay order", ex));
         }
     }
 
@@ -58,7 +63,7 @@ public class RazorpayGatewayClientImpl implements RazorpayGatewayClient {
             options.put("razorpay_signature", razorpaySignature);
             return Utils.verifyPaymentSignature(options, razorpayProperties.getKeySecret());
         } catch (RazorpayException ex) {
-            throw new IllegalStateException("Failed to verify Razorpay payment signature", ex);
+            throw new PaymentGatewayConfigurationException(buildRazorpayMessage("Failed to verify Razorpay payment signature", ex));
         }
     }
 
@@ -67,15 +72,27 @@ public class RazorpayGatewayClientImpl implements RazorpayGatewayClient {
         try {
             return Utils.verifyWebhookSignature(rawBody, webhookSignature, razorpayProperties.getWebhookSecret());
         } catch (RazorpayException ex) {
-            throw new IllegalStateException("Failed to verify Razorpay webhook signature", ex);
+            throw new PaymentGatewayConfigurationException(buildRazorpayMessage("Failed to verify Razorpay webhook signature", ex));
         }
     }
 
     private RazorpayClient client() {
+        if (razorpayProperties.getKeyId() == null || razorpayProperties.getKeyId().isBlank()
+                || razorpayProperties.getKeySecret() == null || razorpayProperties.getKeySecret().isBlank()) {
+            throw new PaymentGatewayConfigurationException("Razorpay is not configured. Set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET.");
+        }
         try {
             return new RazorpayClient(razorpayProperties.getKeyId(), razorpayProperties.getKeySecret());
         } catch (RazorpayException ex) {
-            throw new IllegalStateException("Failed to create Razorpay client", ex);
+            throw new PaymentGatewayConfigurationException(buildRazorpayMessage("Failed to create Razorpay client", ex));
         }
+    }
+
+    private String buildRazorpayMessage(String prefix, Exception ex) {
+        String detail = ex.getMessage();
+        if (detail == null || detail.isBlank()) {
+            return prefix + ". Check Razorpay credentials and network connectivity.";
+        }
+        return prefix + ": " + detail;
     }
 }

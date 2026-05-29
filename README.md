@@ -4,22 +4,25 @@ Spring Boot 3 / Java 21 backend starter for a SaaS restaurant ordering platform.
 
 ## Backend
 
-Run the backend with the bundled Maven wrapper from the repository root:
+The backend project now lives in [`backend/`](backend/).
+
+Run it with the bundled Maven wrapper from that directory:
 
 ```powershell
+cd backend
 .\mvnw.cmd -DskipTests spring-boot:run
 ```
 
 Or use the helper script on Windows:
 
 ```powershell
-.\run-backend-dev.ps1
+.\backend\run-backend-dev.ps1
 ```
 
 Or run the one-command alias:
 
 ```powershell
-.\start-backend.ps1
+.\backend\start-backend.ps1
 ```
 
 ## Frontend
@@ -69,7 +72,7 @@ Set these environment variables before running:
 - `RAZORPAY_WEBHOOK_SECRET`
 - `RAZORPAY_CURRENCY`
 
-Defaults are provided in `src/main/resources/application.yml` for local development.
+Defaults are provided in [`backend/src/main/resources/application.yml`](backend/src/main/resources/application.yml) for local development.
 
 If customers scan a QR code from a phone on the same Wi-Fi network, the backend will automatically detect a LAN-accessible frontend URL when `MENU_BASE_URL` is set to localhost. For a reliable phone scan experience, set `MENU_BASE_URL` to your PC's local IP and re-generate the QR code if needed.
 
@@ -182,7 +185,7 @@ This repository uses Render to host both backend and frontend. A multi-service `
 
 Services defined in `render.yaml`:
 
-- **DineOS Backend** (type: `web`) — builds with `./mvnw -DskipTests package` and runs the Spring Boot JAR.
+- **DineOS Backend** (type: `web`) — builds with `cd backend && ./mvnw -DskipTests package` and runs the Spring Boot JAR from `backend/target/`.
 - **DineOS Frontend** (type: `static`) — builds the React app from `frontend/` and publishes `frontend/dist`.
 
 Render build commands are configured in `render.yaml`. After connecting your GitHub repo to Render, ensure these environment variables are set for the backend:

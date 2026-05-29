@@ -24,6 +24,7 @@
   top: 0;
   z-index: 20;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
@@ -80,6 +81,52 @@
   display: flex;
   align-items: center;
   gap: 16px;
+}
+
+.nav-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin-left: auto;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  font-size: 1.25rem;
+}
+
+.nav-mobile-panel {
+  display: none;
+  width: 100%;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  padding-top: 6px;
+}
+
+.nav-links-mobile {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+}
+
+.nav-links-mobile a {
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.nav-actions-mobile {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.nav-actions-mobile .btn,
+.nav-actions-mobile .nav-login {
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .nav-login {
@@ -875,18 +922,36 @@
 
 @media (max-width: 820px) {
   .landing-nav {
-    flex-direction: column;
-    align-items: stretch;
-    padding: 20px 22px;
+    gap: 14px;
+    padding: 18px 18px 20px;
   }
 
-  .nav-links {
-    justify-content: center;
-    gap: 18px;
+  .nav-links-desktop,
+  .nav-actions-desktop {
+    display: none;
   }
 
-  .nav-actions {
-    justify-content: center;
+  .nav-toggle {
+    display: inline-flex;
+  }
+
+  .nav-mobile-panel {
+    display: grid;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    padding-top: 0;
+    pointer-events: none;
+    transform: translateY(-10px);
+    transition: max-height 0.3s ease, opacity 0.25s ease, transform 0.25s ease, padding-top 0.25s ease;
+  }
+
+  .landing-nav.menu-open .nav-mobile-panel {
+    max-height: 360px;
+    opacity: 1;
+    padding-top: 14px;
+    pointer-events: auto;
+    transform: translateY(0);
   }
 
   .hero-section {
@@ -912,9 +977,13 @@
     padding: 0 18px 60px;
   }
 
-  .nav-links {
+  .nav-links-desktop {
     gap: 14px;
     flex-wrap: wrap;
+  }
+
+  .nav-mobile-panel {
+    gap: 14px;
   }
 
   .hero-title {

@@ -68,6 +68,11 @@ public class GlobalExceptionHandler {
         return buildError(HttpStatus.BAD_REQUEST, ex.getMessage(), request.getRequestURI());
     }
 
+    @ExceptionHandler(PaymentGatewayConfigurationException.class)
+    public ResponseEntity<ApiError> handlePaymentGatewayConfiguration(PaymentGatewayConfigurationException ex, HttpServletRequest request) {
+        return buildError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), request.getRequestURI());
+    }
+
     @ExceptionHandler(AnalyticsAccessDeniedException.class)
     public ResponseEntity<ApiError> handleAnalyticsAccessDenied(AnalyticsAccessDeniedException ex, HttpServletRequest request) {
         return buildError(HttpStatus.FORBIDDEN, ex.getMessage(), request.getRequestURI());
