@@ -863,7 +863,8 @@
   gap: 14px;
 }
 
-.social-links a {
+.social-links a,
+.social-links button {
   width: 42px;
   height: 42px;
   display: grid;
@@ -871,6 +872,11 @@
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.05);
   color: var(--text);
+}
+
+.social-links button {
+  border: none;
+  cursor: pointer;
 }
 
 .footer-copy {

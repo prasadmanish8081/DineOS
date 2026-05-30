@@ -158,6 +158,23 @@ export default function LandingPage() {
   const [activeFaq, setActiveFaq] = useState(0);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const navItems = ['Home', 'Features', 'About', 'Pricing', 'Contact'];
+  const scrollToSection = (sectionId) => (event) => {
+    event.preventDefault();
+    setMobileNavOpen(false);
+
+    if (sectionId === 'home') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    const target = document.getElementById(sectionId);
+    if (target) {
+      target.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
 
   return (
     <div className="landing-shell">
@@ -173,7 +190,7 @@ export default function LandingPage() {
         </Link>
         <nav className="nav-links nav-links-desktop">
           {navItems.map((item) => (
-            <a key={item} href={`#${item.toLowerCase()}`} onClick={() => setMobileNavOpen(false)}>
+            <a key={item} href={`#${item.toLowerCase()}`} onClick={scrollToSection(item.toLowerCase())}>
               {item}
             </a>
           ))}
@@ -198,7 +215,7 @@ export default function LandingPage() {
         <div className="nav-mobile-panel">
           <nav className="nav-links nav-links-mobile">
             {navItems.map((item) => (
-              <a key={item} href={`#${item.toLowerCase()}`} onClick={() => setMobileNavOpen(false)}>
+              <a key={item} href={`#${item.toLowerCase()}`} onClick={scrollToSection(item.toLowerCase())}>
                 {item}
               </a>
             ))}
@@ -251,7 +268,7 @@ export default function LandingPage() {
                 Get Started
                 <FiArrowRight />
               </Link>
-              <a className="btn btn-secondary" href="#dashboard">
+              <a className="btn btn-secondary" href="#dashboard" onClick={scrollToSection('dashboard')}>
                 Live Demo
                 <FiExternalLink />
               </a>
@@ -555,7 +572,7 @@ export default function LandingPage() {
                     <li key={feature}>{feature}</li>
                   ))}
                 </ul>
-                <a className="btn btn-primary" href="#contact">
+                <a className="btn btn-primary" href="#contact" onClick={scrollToSection('contact')}>
                   Select Plan
                 </a>
               </motion.article>
@@ -619,10 +636,18 @@ export default function LandingPage() {
           </div>
           <div>
             <h4>Quick Links</h4>
-            <a href="#features">Features</a>
-            <a href="#about">How it Works</a>
-            <a href="#pricing">Pricing</a>
-            <a href="#contact">Contact</a>
+            <a href="#features" onClick={scrollToSection('features')}>
+              Features
+            </a>
+            <a href="#about" onClick={scrollToSection('about')}>
+              How it Works
+            </a>
+            <a href="#pricing" onClick={scrollToSection('pricing')}>
+              Pricing
+            </a>
+            <a href="#contact" onClick={scrollToSection('contact')}>
+              Contact
+            </a>
           </div>
           <div>
             <h4>Contact</h4>
@@ -632,10 +657,18 @@ export default function LandingPage() {
           <div>
             <h4>Social</h4>
             <div className="social-links">
-              <a href="#"><FaInstagram /></a>
-              <a href="#"><FaTwitter /></a>
-              <a href="#"><FaLinkedin /></a>
-              <a href="#"><FaFacebookF /></a>
+              <button type="button" aria-label="Instagram">
+                <FaInstagram />
+              </button>
+              <button type="button" aria-label="Twitter">
+                <FaTwitter />
+              </button>
+              <button type="button" aria-label="LinkedIn">
+                <FaLinkedin />
+              </button>
+              <button type="button" aria-label="Facebook">
+                <FaFacebookF />
+              </button>
             </div>
           </div>
         </div>
