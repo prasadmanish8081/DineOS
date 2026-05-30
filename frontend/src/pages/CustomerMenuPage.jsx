@@ -304,7 +304,11 @@ export default function CustomerMenuPage() {
         checkout.open();
       } catch (paymentError) {
         console.error('Payment initialization failed:', paymentError);
-        setPaymentState('Order created, but payment could not be started. Please ask staff or try again.');
+        const paymentMessage =
+          extractApiErrors(paymentError).message ||
+          paymentError?.message ||
+          'Order created, but payment could not be started. Please ask staff or try again.';
+        setPaymentState(paymentMessage);
       }
     } catch (err) {
       console.error('Place order error:', err);
