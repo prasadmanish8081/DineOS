@@ -273,7 +273,7 @@ https://dineos-1-yif5.onrender.com
 
 ## 💻 GitHub Repository
 
-https://github.com/prasadmanish8081
+https://github.com/prasadmanish8081/DineOS
 
 ---
 
